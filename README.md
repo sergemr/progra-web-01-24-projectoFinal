@@ -20,6 +20,11 @@
 	- Verificación usuario login
 	- Confimar compra cliente
 	- Denegar compra cliente
+ # Tablas
+	- Tabla usuarioCliente
+	- Tabla usuarioVendedor
+	- Tabla Carrito
+	- Tabla Producto
 
 SV_JC_DV_AM_AQ_AM
 
