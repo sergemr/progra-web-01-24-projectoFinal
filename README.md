@@ -18,5 +18,8 @@ Crear una aplicacion que simularia una tienda virtual de ropa.
  - Login 
  - Carrito
  - Base Datos 
+    - Usuario 
+    - Catalogo 
+    - Pedidos 
  - Resposive
- 
+
