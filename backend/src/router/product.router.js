@@ -1,5 +1,4 @@
 const router = require('express').Router()
-const {faker} = require("@faker-js/faker")
 
 const Products = require("../model/product.model")
 
@@ -12,17 +11,28 @@ router.get("/products", async (req, res) => {
     })
 })
 
-router.get("/products", (req, res) => {
-    res.send("Im a router");
-})
+router.get("/products/:product_id", async (req, res) => {
+    const id = req.params.product_id
+    const product = await Products.findOne({
+        where: {
+            product_id: id,
+        },
+    })
+    res.status(200).json({
+        ok: true,
+        status: 200,
+        body: product
+    });
+});
 
 router.post("/products", async (req, res) => {
+    const dataProducts = req.body
     await Products.sync()
     const createProduct = await Products.create({
-        product_name: faker.commerce.product(),
-        price: faker.commerce.price(),
-        quantity: 1,
-        is_stock: faker.datatype.boolean()
+        product_name: dataProducts.product_name,
+        price: dataProducts.price,
+        quantity: dataProducts.quantity,
+        is_stock: dataProducts.is_stock
     })
     res.status(200).json({
         ok:true,
@@ -31,12 +41,74 @@ router.post("/products", async (req, res) => {
     })
 })
 
-router.put("/products", (req, res) => {
-    res.send("Im a router");
-})
+router.put("/products/:product_id", async (req, res) => {
+    const id = req.params.product_id;
+    const { product_name, price, quantity, is_stock } = req.body;
 
-router.delete("/products", (req, res) => {
-    res.send("Im a router");
-})
+    try {
+        const productToUpdate = await Products.findOne({ where: { product_id: id } });
+
+        if (!productToUpdate) {
+            return res.status(404).json({
+                ok: false,
+                status: 404,
+                message: "Product not found"
+            });
+        }
+
+        productToUpdate.product_name = product_name || productToUpdate.product_name;
+        productToUpdate.price = price || productToUpdate.price;
+        productToUpdate.quantity = quantity || productToUpdate.quantity;
+        productToUpdate.is_stock = is_stock || productToUpdate.is_stock;
+
+        await productToUpdate.save();
+
+        res.status(200).json({
+            ok: true,
+            status: 200,
+            message: "Product updated",
+            body: productToUpdate
+        });
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            status: 500,
+            message: "Error updating product",
+            error: error.message
+        });
+    }
+});
+
+// Delete product by id
+router.delete("/products/:product_id", async (req, res) => {
+    const id = req.params.product_id;
+
+    try {
+        const productToDelete = await Products.findOne({ where: { product_id: id } });
+
+        if (!productToDelete) {
+            return res.status(404).json({
+                ok: false,
+                status: 404,
+                message: "Product not found"
+            });
+        }
+
+        await productToDelete.destroy();
+
+        res.status(200).json({
+            ok: true,
+            status: 200,
+            message: "Product deleted"
+        });
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            status: 500,
+            message: "Error deleting product",
+            error: error.message
+        });
+    }
+});
 
 module.exports = router;

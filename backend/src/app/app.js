@@ -1,15 +1,21 @@
-const express = require('express')
-const morgan = require('morgan')
-const router = require("../router/product.router")
+const express = require('express');
+const morgan = require('morgan');
+const routerProduct = require("../router/product.router");
+const routerUser = require("../router/user.router");
 
-const app = express()
+const app = express();
 
-app.use(morgan("dev"))
+app.use(morgan("dev"));
+app.use(express.json());
 
+// Root endpoint
 app.get('/', (req, res) => {
-    res.send('This is Express')
-})
+    res.send('This is Express');
+});
 
-app.use("/api/v1", router)
+// API routes
+app.use("/api/v1", routerProduct);
+app.use("/api/v1", routerUser);
+
 
 module.exports = app;
