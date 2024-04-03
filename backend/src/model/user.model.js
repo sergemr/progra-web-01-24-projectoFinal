@@ -1,16 +1,17 @@
 const { Sequelize, Model, DataTypes } = require('sequelize');
-
 require('dotenv').config();
-
-// Option 3: Passing parameters separately (other dialects)
-const sequelize = new Sequelize(process.env.DATABASE_NAME, process.env.DATABASE_USER, process.env.DATABASE_PASSWORD, {
+ 
+const sequelize = new Sequelize(
+  process.env.DATABASE_NAME, 
+  process.env.DATABASE_USER, 
+  process.env.DATABASE_PASSWORD, {
   host: process.env.DATABASE_HOST,
   dialect: "mysql",
   port: process.env.DATABASE_PORT || 3306 // Default to 3306 if DATABASE_PORT is not set
 });
-
+ 
 class User extends Model {}
-
+ 
 User.init({
   user_id: {
     type: DataTypes.UUID,
@@ -42,11 +43,15 @@ User.init({
   role: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'client' 
+    defaultValue: 'client'
   }
 }, {
-  sequelize, 
-  modelName: 'User',
+  sequelize,
+  modelName: 'User'
+  // Optionally, you can add the following option to force the table to drop and recreate:
+  // , { force: true }
 });
-
-module.exports = User;
+ 
+sequelize.sync().then(() => {
+  console.log('Database and tables created!');
+});
