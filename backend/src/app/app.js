@@ -2,7 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const routerProduct = require("../router/product.router");
 const routerUser = require("../router/user.router");
-
+const routerOrder = require("../router/order.router");
 
 const app = express();
 
@@ -19,6 +19,7 @@ app.get('/', (req, res) => {
 // API routes
 app.use("/api/v1", routerProduct);
 app.use("/api/v1", routerUser);
+app.use("/api/v1", routerOrder);
 
 
 module.exports = app;
