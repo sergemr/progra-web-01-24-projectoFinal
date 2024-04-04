@@ -22,9 +22,10 @@ const Login = () => {
             console.log(response);
             localStorage.setItem("user", JSON.stringify(response.data));
             //utilizar navigate para redirigir al usuario una vez logeado
-        }catch (e) {
-            alert("Credenciales  invalidas")
-        }
+        } catch (error) {
+            console.error("Login error", error);
+            alert("Credenciales invalidas o error de servidor");
+        }        
         
     };
     

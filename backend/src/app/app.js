@@ -5,8 +5,10 @@ const routerUser = require("../router/user.router");
 const routerOrder = require("../router/order.router");
 
 const app = express();
+const cors = require('cors');
 
-
+// Allow all origins
+app.use(cors());
 
 app.use(morgan("dev"));
 app.use(express.json());
