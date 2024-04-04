@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import Card from '@mui/material/Card';
+import Card from '@mui/material/CardContent';
 import CardContent from '@mui/material/CardContent';
-import styles from './login.css';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import axios from "axios";
@@ -16,7 +15,7 @@ const Login = () => {
         console.log(password);
 
         try{
-            const response  = await axios.post("${port}/login", {
+            const response  = await axios.post("http://localhost:3001/api/v1/login", {
                 email: user,
                 password: password,
             });

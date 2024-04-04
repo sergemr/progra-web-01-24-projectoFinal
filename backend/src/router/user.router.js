@@ -136,4 +136,28 @@ router.delete("/users/:user_id", async (req, res) => {
     }
 });
 
+//Find user by email password
+router.post("/login", async (req,res)=>{
+    try {
+        const {email,password} = req.body;
+        //Verify data
+        console.log("req.body");
+        console.log(req.body);
+        const user = await  User.findOne({where:{email:email, password:password}});
+        if(!user){
+            return res.status(401).send({
+                ok:false,
+                status: 401,
+                message:"Usuario o contraseña incorrectos."
+            })
+        }else{
+            res.status(300).send({
+                message: 'Acceso permitido'
+            })
+        }
+    } catch (error) {
+        console.error("Error autenticando usuario", error);
+        res.status(500).json({ error: "Error interno del servidor" });
+    }
+});
 module.exports = router;
