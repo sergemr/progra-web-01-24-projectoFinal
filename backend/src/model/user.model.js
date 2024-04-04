@@ -55,3 +55,5 @@ User.init({
 sequelize.sync().then(() => {
   console.log('Database and tables created!');
 });
+
+module.exports = User;
