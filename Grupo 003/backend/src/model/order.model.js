@@ -39,9 +39,9 @@ Order.init({
         }
     },
     quantity: {
-      type:DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 1,
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
     },
     price: {
         type: DataTypes.FLOAT,
@@ -49,23 +49,25 @@ Order.init({
     },
     total_amount: {
         type: DataTypes.FLOAT,
-        get() {
-            return this.getDataValue('price') * this.getDataValue('quantity');
-        },
-        allowNull: false
+        // Remove allowNull if you're calculating and not storing it
     },
     status: {
         type: DataTypes.STRING,
-        allowNull:  false,
+        allowNull: false,
         defaultValue: 'pending'
     },
 }, {
     sequelize,
-    modelName: 'Order'
-    // Optionally, you can add the following option to force the table to drop and recreate:
-    // , { force: true }
+    modelName: 'Order',
+    hooks: {
+        beforeCreate: (order, options) => {
+            order.total_amount = order.price * order.quantity;
+        }
+    }
 });
 
 sequelize.sync().then(() => {
     console.log('Database and tables created!');
   });
+
+module.exports = Order;

@@ -48,7 +48,6 @@ router.post("/orders", async (req, res) => {
             price,
             status
         });
-
         res.status(201).json({
             ok: true,
             status: 201,

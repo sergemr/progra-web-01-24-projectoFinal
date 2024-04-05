@@ -45,3 +45,5 @@ sequelize.sync().then(() => {
 }).catch((error) => {
   console.error('Unable to synchronize the database:', error);
 });
+
+module.exports = Product;
